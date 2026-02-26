@@ -1,0 +1,123 @@
+{
+    "system_name": "IoT Sensor Node — Digital Twin",
+    "description": "Digital Twin of a resource-constrained wireless IoT sensor node",
+    "device": {
+        "processor": {
+            "name": "ARM Cortex-M4",
+            "clock_mhz": 80,
+            "max_utilization": 1.0,
+            "task_costs": {
+                "sensing_cycles": 500,
+                "processing_cycles": 2000,
+                "transmission_cycles": 3000,
+                "idle_cycles": 0
+            }
+        },
+        "memory": {
+            "total_ram_kb": 256,
+            "base_usage_kb": 32,
+            "per_reading_buffer_kb": 0.5,
+            "max_buffer_readings": 100,
+            "leak_enabled": true,
+            "leak_rate_kb_per_minute": 0.05
+        },
+        "battery": {
+            "capacity_mah": 1000,
+            "voltage": 3.7,
+            "current_draw_ma": {
+                "sensing": 0.5,
+                "processing": 2.0,
+                "transmission": 15.0,
+                "idle": 0.01
+            },
+            "warning_thresholds": [
+                0.20,
+                0.10,
+                0.05
+            ]
+        },
+        "network": {
+            "type": "LoRa",
+            "max_bandwidth_kbps": 50,
+            "max_payload_bytes": 256,
+            "base_packet_loss_rate": 0.01,
+            "congestion_threshold": 0.80,
+            "congested_packet_loss_rate": 0.15
+        }
+    },
+    "sensors": {
+        "temperature": {
+            "base_value": 25.0,
+            "noise_std_dev": 0.5,
+            "anomaly_probability": 0.005,
+            "anomaly_spike_range": [
+                10.0,
+                20.0
+            ],
+            "unit": "°C"
+        },
+        "humidity": {
+            "base_value": 60.0,
+            "noise_std_dev": 2.0,
+            "anomaly_probability": 0.003,
+            "anomaly_spike_range": [
+                15.0,
+                30.0
+            ],
+            "unit": "%"
+        },
+        "light": {
+            "day_value": 500,
+            "night_value": 10,
+            "cycle_period_hours": 24,
+            "noise_std_dev": 20.0,
+            "unit": "lux"
+        }
+    },
+    "sync": {
+        "default_strategy": "adaptive",
+        "full_state_interval_s": 10,
+        "delta_threshold": 0.02,
+        "event_change_threshold": 0.05,
+        "adaptive_config": {
+            "high_battery_interval_s": 5,
+            "medium_battery_interval_s": 15,
+            "low_battery_interval_s": 60,
+            "high_battery_threshold": 0.50,
+            "low_battery_threshold": 0.15
+        }
+    },
+    "edge": {
+        "enabled": true,
+        "filter_window_size": 5,
+        "compression_enabled": true,
+        "compression_ratio": 0.6,
+        "priority_queue_enabled": true,
+        "anomaly_immediate_sync": true
+    },
+    "fault_detection": {
+        "cpu_critical_threshold": 0.95,
+        "cpu_critical_duration_s": 30,
+        "cpu_warning_threshold": 0.80,
+        "cpu_warning_duration_s": 60,
+        "memory_critical_threshold": 0.95,
+        "memory_warning_threshold": 0.80,
+        "battery_critical_threshold": 0.05,
+        "battery_warning_threshold": 0.20,
+        "bandwidth_warning_threshold": 0.80,
+        "packet_loss_critical_threshold": 0.20,
+        "state_drift_warning_threshold": 0.05,
+        "memory_leak_detection_window_s": 300,
+        "communication_timeout_multiplier": 2.0,
+        "sensor_anomaly_sigma": 3.0
+    },
+    "simulation": {
+        "duration_hours": 6,
+        "time_step_seconds": 1,
+        "sampling_rate_seconds": 5,
+        "random_seed": 42,
+        "verbose": true,
+        "log_format": "json",
+        "log_output_dir": "logs"
+    }
+}
